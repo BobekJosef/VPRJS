@@ -51,6 +51,9 @@ int main() {
     double v2_spectra_pi[n_bins];
     double v2_spectra_K[n_bins];
     double v2_spectra_p[n_bins];
+    double v2_eve_pi[n_bins];
+    double v2_eve_K[n_bins];
+    double v2_eve_p[n_bins];
 
     for(int i=0; i<n_bins; i++)
     {
@@ -61,6 +64,9 @@ int main() {
         v2_spectra_pi[i]=0;
         v2_spectra_K[i]=0;
         v2_spectra_p[i]=0;
+        v2_eve_pi[i]=0;
+        v2_eve_K[i]=0;
+        v2_eve_p[i]=0;
     }
 
     int N_eve = 0;
@@ -163,12 +169,15 @@ int main() {
 
             if (n_pi != 0) {
                 v2_tmp_pi /= n_pi;
+                v2_eve_pi[b]++;
             }
             if (n_K != 0) {
                 v2_tmp_K /= n_K;
+                v2_eve_K[b]++;
             }
             if (n_p != 0) {
                 v2_tmp_p /= n_p;
+                v2_eve_p[b]++;
             }
 
             v2_spectra_pi[b]+=v2_tmp_pi;
@@ -184,13 +193,13 @@ int main() {
 
     for (int i = 0; i < n_bins; i++) //normalization and scaling
     {
-        y_spectra[i]/= N_eve * ((y_max-y_min)/n_bins);
-        pt_spectra_pi[i] /= N_eve * 2 * M_PI * ((i*((pt_max-pt_min)/n_bins))+(((pt_max-pt_min)/n_bins)/2)) * ((pt_max-pt_min)/n_bins); //1/N_eve*2pi*pt
-        pt_spectra_K[i] /= N_eve * 2 * M_PI * ((i*((pt_max-pt_min)/n_bins))+(((pt_max-pt_min)/n_bins)/2)) * ((pt_max-pt_min)/n_bins); //1/N_eve*2pi*pt
-        pt_spectra_p[i] /= N_eve * 2 * M_PI * ((i*((pt_max-pt_min)/n_bins))+(((pt_max-pt_min)/n_bins)/2)) * ((pt_max-pt_min)/n_bins); //1/N_eve*2pi*pt
-        v2_spectra_pi[i] /= N_eve;
-        v2_spectra_K[i] /= N_eve;
-        v2_spectra_p[i] /= N_eve;
+        y_spectra[i]/= N_eve * ((y_max-y_min)/n_bins) * 2 * M_PI;
+        pt_spectra_pi[i] /= N_eve * 2 * M_PI * ((i*((pt_max-pt_min)/n_bins))+(((pt_max-pt_min)/n_bins)/2)) * ((pt_max-pt_min)/n_bins) * (0.4); //1/N_eve*2pi*pt*y
+        pt_spectra_K[i] /= N_eve * 2 * M_PI * ((i*((pt_max-pt_min)/n_bins))+(((pt_max-pt_min)/n_bins)/2)) * ((pt_max-pt_min)/n_bins) * (0.4); //1/N_eve*2pi*pt*y
+        pt_spectra_p[i] /= N_eve * 2 * M_PI * ((i*((pt_max-pt_min)/n_bins))+(((pt_max-pt_min)/n_bins)/2)) * ((pt_max-pt_min)/n_bins) * (0.4); //1/N_eve*2pi*pt*y
+        v2_spectra_pi[i] /= v2_eve_pi[i];
+        v2_spectra_K[i] /= v2_eve_K[i];
+        v2_spectra_p[i] /= v2_eve_p[i];
     }
 
 
