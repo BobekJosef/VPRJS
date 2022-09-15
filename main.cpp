@@ -112,19 +112,19 @@ int main() {
         {
             if (get<4>(i) != 0) //charged
                 fill(n_bins, y_min, y_max, y_spectra, get<2>(i));
-            if (abs(get<3>(i)) == 211 && abs(get<2>(i))<=0.2) //pions, |y|<=0.2
+            if (abs(get<3>(i)) == 211 && fabs(get<2>(i))<=0.5) //pions, |y|<=0.5
             {
                 fill(n_bins, pt_min, pt_max, pt_spectra_pi, get<0>(i));
                 Q2x_pi+=get<0>(i) * cos(2*get<1>(i));
                 Q2y_pi+=get<0>(i) * sin(2*get<1>(i));
             }
-            if (abs(get<3>(i)) == 321 && abs(get<2>(i))<=0.2) //kaons, |y|<=0.2
+            if (abs(get<3>(i)) == 321 && fabs(get<2>(i))<=0.5) //kaons, |y|<=0.5
             {
                 fill(n_bins, pt_min, pt_max, pt_spectra_K, get<0>(i));
                 Q2x_K+=get<0>(i) * cos(2*get<1>(i));
                 Q2y_K+=get<0>(i) * sin(2*get<1>(i));
             }
-            if (abs(get<3>(i)) == 2212 && abs(get<2>(i))<=0.2) //protons, |y|<=0.2
+            if (abs(get<3>(i)) == 2212 && fabs(get<2>(i))<=0.5) //protons, |y|<=0.5
             {
                 fill(n_bins, pt_min, pt_max, pt_spectra_p, get<0>(i));
                 Q2x_p+=get<0>(i) * cos(2*get<1>(i));
@@ -143,22 +143,22 @@ int main() {
 
             for(auto i : event)
             {
-                if (abs(get<3>(i)) == 211 && abs(get<2>(i))<=0.2
-                && get<0>(i)>(b*((pt_max-pt_min)/n_bins)) && get<0>(i)<((b+1)*((pt_max-pt_min)/n_bins))) //pions, |y|<=0.2, pt=bin
+                if (abs(get<3>(i)) == 211 && fabs(get<2>(i))<=0.5
+                    && get<0>(i)>(b*((pt_max-pt_min)/n_bins)) && get<0>(i)<((b+1)*((pt_max-pt_min)/n_bins))) //pions, |y|<=0.2, pt=bin
                 {
                     v2_tmp_pi+= cos(2*(get<1>(i)-psi2_pi));
                     n_pi++;
                 }
 
-                if (abs(get<3>(i)) == 321 && abs(get<2>(i))<=0.2
-                && get<0>(i)>(b*((pt_max-pt_min)/n_bins)) && get<0>(i)<((b+1)*((pt_max-pt_min)/n_bins))) //kaons, |y|<=0.2, pt=bin
+                if (abs(get<3>(i)) == 321 && fabs(get<2>(i))<=0.5
+                    && get<0>(i)>(b*((pt_max-pt_min)/n_bins)) && get<0>(i)<((b+1)*((pt_max-pt_min)/n_bins))) //kaons, |y|<=0.5, pt=bin
                 {
                     v2_tmp_K+= cos(2*(get<1>(i)-psi2_K));
                     n_K++;
                 }
 
-                if (abs(get<3>(i)) == 2212 && abs(get<2>(i))<=0.2
-                && get<0>(i)>(b*((pt_max-pt_min)/n_bins)) && get<0>(i)<((b+1)*((pt_max-pt_min)/n_bins))) //protons, |y|<=0.2, pt=bin
+                if (abs(get<3>(i)) == 2212 && fabs(get<2>(i))<=0.5
+                    && get<0>(i)>(b*((pt_max-pt_min)/n_bins)) && get<0>(i)<((b+1)*((pt_max-pt_min)/n_bins))) //protons, |y|<=0.5, pt=bin
                 {
                     v2_tmp_p+= cos(2*(get<1>(i)-psi2_p));
                     n_p++;
@@ -197,9 +197,12 @@ int main() {
         pt_spectra_pi[i] /= N_eve * 2 * M_PI * ((i*((pt_max-pt_min)/n_bins))+(((pt_max-pt_min)/n_bins)/2)) * ((pt_max-pt_min)/n_bins) * (0.4); //1/N_eve*2pi*pt*y
         pt_spectra_K[i] /= N_eve * 2 * M_PI * ((i*((pt_max-pt_min)/n_bins))+(((pt_max-pt_min)/n_bins)/2)) * ((pt_max-pt_min)/n_bins) * (0.4); //1/N_eve*2pi*pt*y
         pt_spectra_p[i] /= N_eve * 2 * M_PI * ((i*((pt_max-pt_min)/n_bins))+(((pt_max-pt_min)/n_bins)/2)) * ((pt_max-pt_min)/n_bins) * (0.4); //1/N_eve*2pi*pt*y
-        v2_spectra_pi[i] /= v2_eve_pi[i];
-        v2_spectra_K[i] /= v2_eve_K[i];
-        v2_spectra_p[i] /= v2_eve_p[i];
+        //v2_spectra_pi[i] /= v2_eve_pi[i];
+        //v2_spectra_K[i] /= v2_eve_K[i];
+        //v2_spectra_p[i] /= v2_eve_p[i];
+        v2_spectra_pi[i] /= N_eve;
+        v2_spectra_K[i] /= N_eve;
+        v2_spectra_p[i] /= N_eve;
     }
 
 
